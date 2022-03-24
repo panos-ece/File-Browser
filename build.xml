@@ -9,6 +9,6 @@
 	
     <target name="compile">
         <mkdir dir="build/classes"/>
-        <javac includeantruntime="false" srcdir="src" destdir="build/classes"/>
+        <javac includeantruntime="false" srcdir="ce326/hw3" destdir="build/classes"/>
     </target>
 </project>
