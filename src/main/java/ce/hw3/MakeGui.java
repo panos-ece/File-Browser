@@ -1,4 +1,4 @@
-package ce326.hw3;
+package ce.hw3;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -8,7 +8,7 @@ package ce326.hw3;
 
 import java.awt.*;
 import javax.swing.*;
-import java.awt.event.*;
+
 /**
  *
  * @author panpa

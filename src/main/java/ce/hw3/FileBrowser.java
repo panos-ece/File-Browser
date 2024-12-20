@@ -1,4 +1,4 @@
-package ce326.hw3;
+package ce.hw3;
 
 
 
@@ -14,10 +14,6 @@ package ce326.hw3;
  */
 public class FileBrowser {
     public static void main(String []args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                MakeGui gui = new MakeGui();
-            }
-        });
+        javax.swing.SwingUtilities.invokeLater(MakeGui::new);
     }
 }

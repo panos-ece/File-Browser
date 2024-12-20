@@ -1,4 +1,4 @@
-package ce326.hw3;
+package ce.hw3;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -55,7 +55,7 @@ public class SearchToolbar {
             
             if(searched.contains(formatSearch)) {
                 int index = searched.lastIndexOf(formatSearch);
-                type = searched.substring(index+formatSearch.length(), searched.length());
+                type = searched.substring(index+formatSearch.length());
                 searched = searched.substring(0, index);
             }
             
@@ -111,34 +111,34 @@ public class SearchToolbar {
         }
         
         if(type != null) {
-            for(int i = 0; i < contentsDir.length; i++) {
-                if(type.equals("dir")) {
-                    if(contentsDir[i].isDirectory()) {
-                        if(contentsDir[i].getName().toLowerCase().contains(searchedText)) {
-                            setButtons(contentsDir[i],currentGui.setCurrDir.iconDisplay(contentsDir[i]));
+            for (File file : contentsDir) {
+                boolean contains = file.getName().toLowerCase().contains(searchedText);
+                if (type.equals("dir")) {
+                    if (file.isDirectory()) {
+                        if (contains) {
+                            setButtons(file, currentGui.setCurrDir.iconDisplay(file));
                         }
-                        search(contentsDir[i],searchedText,type);
+                        search(file, searchedText, type);
                     }
-                }
-                else {
-                    boolean flag = isType(contentsDir[i],type);
+                } else {
+                    boolean flag = isType(file, type);
 
-                    if(contentsDir[i].getName().toLowerCase().contains(searchedText) && (flag == true)) {
-                        setButtons(contentsDir[i],currentGui.setCurrDir.iconDisplay(contentsDir[i]));
+                    if (contains && (flag)) {
+                        setButtons(file, currentGui.setCurrDir.iconDisplay(file));
                     }
-                    if(contentsDir[i].isDirectory()) {
-                        search(contentsDir[i],searchedText,type);
+                    if (file.isDirectory()) {
+                        search(file, searchedText, type);
                     }
                 }
             }
         }
         else {
-            for(int i = 0; i < contentsDir.length; i++) {
-                if(contentsDir[i].getName().toLowerCase().contains(searchedText)) {
-                    setButtons(contentsDir[i],currentGui.setCurrDir.iconDisplay(contentsDir[i]));
+            for (File file : contentsDir) {
+                if (file.getName().toLowerCase().contains(searchedText)) {
+                    setButtons(file, currentGui.setCurrDir.iconDisplay(file));
                 }
-                if(contentsDir[i].isDirectory()) {
-                    search(contentsDir[i],searchedText,type);
+                if (file.isDirectory()) {
+                    search(file, searchedText, null);
                 }
             }
         }
@@ -156,20 +156,10 @@ public class SearchToolbar {
         }
         
         if(type.contains(("."))) {
-            if(file.getName().substring(index).equals(type)) {
-                return true;
-            }
-            else {
-                return false;
-            }
+            return file.getName().substring(index).equals(type);
         }
         else {
-            if(file.getName().substring(index + 1).equals(type)) {
-                return true;
-            }
-            else {
-                return false;
-            }
+            return file.getName().substring(index + 1).equals(type);
         }
     }
 }

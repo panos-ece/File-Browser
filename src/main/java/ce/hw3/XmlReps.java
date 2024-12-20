@@ -1,4 +1,4 @@
-package ce326.hw3;
+package ce.hw3;
 
 import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -26,7 +26,7 @@ public class XmlReps {
     
     
     public XmlReps(){
-        xml = new ArrayList<XmlRep>();
+        xml = new ArrayList<>();
     }
     
     public List<XmlRep> getReps() {

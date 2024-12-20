@@ -1,9 +1,8 @@
-package ce326.hw3;
+package ce.hw3;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /*
@@ -24,18 +23,18 @@ public class XmlRep {
     @XmlAttribute
     public String directoryName;
     @XmlAttribute
-    public String DirPathName;
+    public String dirPathName;
     
     public XmlRep() {
     }
     
-    public XmlRep(String directoryName, String DirPathName) {
+    public XmlRep(String directoryName, String dirPathName) {
         this.directoryName = directoryName;
-        this.DirPathName = DirPathName;
+        this.dirPathName = dirPathName;
     }
 
     @Override
     public String toString() {
-        return "XmlRep{" + "directoryName=" + directoryName + ", DirPathName=" + DirPathName;
+        return "XmlRep{" + "directoryName=" + directoryName + ", DirPathName=" + dirPathName;
     }
 }

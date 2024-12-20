@@ -1,4 +1,4 @@
-package ce326.hw3;
+package ce.hw3;
 
 import java.awt.*;
 import java.io.*;
@@ -89,19 +89,9 @@ public class Menu implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         
         if(e.getActionCommand().equals("Search")) {
-            if(currentFrame.setSearchToolbar.searchButton.isVisible()) {
-                currentFrame.setSearchToolbar.searchButton.setVisible(false);
-            }
-            else {
-                currentFrame.setSearchToolbar.searchButton.setVisible(true);
-            }
-            
-            if(currentFrame.setSearchToolbar.searchField.isVisible()) {
-                currentFrame.setSearchToolbar.searchField.setVisible(false);
-            }
-            else {
-                currentFrame.setSearchToolbar.searchField.setVisible(true);
-            }
+            currentFrame.setSearchToolbar.searchButton.setVisible(!currentFrame.setSearchToolbar.searchButton.isVisible());
+
+            currentFrame.setSearchToolbar.searchField.setVisible(!currentFrame.setSearchToolbar.searchField.isVisible());
         }
         
         if(e.getActionCommand().equals("New Window")) {
@@ -321,16 +311,17 @@ public class Menu implements ActionListener {
             }
             
             JLabel sizeText = new JLabel("Size: ");
-            JLabel size = new JLabel();
-            
-            switch(iter) {
-                case(0): size = new JLabel(String.format("%.2f",fileSizeFormat) + " byte" + " (" + fileSize + " byte" + ")"); break;
-                case(1): size = new JLabel(String.format("%.2f",fileSizeFormat) + " KB" + " (" + fileSize + " byte" + ")");   break;
-                case(2): size = new JLabel(String.format("%.2f",fileSizeFormat) + " MB" + " (" + fileSize + " byte" + ")");   break;
-                case(3): size = new JLabel(String.format("%.2f",fileSizeFormat) + " GB" + " (" + fileSize + " byte" + ")");   break;
-                case(4): size = new JLabel(String.format("%.2f",fileSizeFormat) + " TB" + " (" + fileSize + " byte" + ")");   break;
-            }
-            
+
+            JLabel size = switch (iter) {
+                case (0) ->
+                        new JLabel(String.format("%.2f", fileSizeFormat) + " byte" + " (" + fileSize + " byte" + ")");
+                case (1) -> new JLabel(String.format("%.2f", fileSizeFormat) + " KB" + " (" + fileSize + " byte" + ")");
+                case (2) -> new JLabel(String.format("%.2f", fileSizeFormat) + " MB" + " (" + fileSize + " byte" + ")");
+                case (3) -> new JLabel(String.format("%.2f", fileSizeFormat) + " GB" + " (" + fileSize + " byte" + ")");
+                case (4) -> new JLabel(String.format("%.2f", fileSizeFormat) + " TB" + " (" + fileSize + " byte" + ")");
+                default -> new JLabel();
+            };
+
             firstColumn.add(sizeText);
             secondColumn.add(size);
             
@@ -346,7 +337,7 @@ public class Menu implements ActionListener {
             if(fileName.canRead()) {
                 read = new JCheckBox("read", true);
                 fileName.setReadable(false);
-                if(fileName.canRead() == true) {
+                if(fileName.canRead()) {
                     read.setEnabled(false);
                 }
                 else {
@@ -356,7 +347,7 @@ public class Menu implements ActionListener {
             else {
                 read = new JCheckBox("read", false);
                 fileName.setReadable(true);
-                if(fileName.canRead() == false) {
+                if(!fileName.canRead()) {
                     read.setEnabled(false);
                 }
                 else {
@@ -367,7 +358,7 @@ public class Menu implements ActionListener {
             if(fileName.canWrite()) {
                 write = new JCheckBox("write", true);
                 fileName.setWritable(false);
-                if(fileName.canWrite() == true) {
+                if(fileName.canWrite()) {
                     write.setEnabled(false);
                 }
                 else {
@@ -377,7 +368,7 @@ public class Menu implements ActionListener {
             else {
                 write = new JCheckBox("write", false);
                 fileName.setWritable(true);
-                if(fileName.canWrite() == false) {
+                if(!fileName.canWrite()) {
                     write.setEnabled(false);
                 }
                 else {
@@ -388,7 +379,7 @@ public class Menu implements ActionListener {
             if(fileName.canExecute()) {
                 execute = new JCheckBox("execute", true);
                 fileName.setExecutable(false);
-                if(fileName.canExecute() == true) {
+                if(fileName.canExecute()) {
                     execute.setEnabled(false);
                 }
                 else {
@@ -398,7 +389,7 @@ public class Menu implements ActionListener {
             else {
                 execute = new JCheckBox("execute", false);
                 fileName.setExecutable(true);
-                if(fileName.canExecute() == false) {
+                if(!fileName.canExecute()) {
                     execute.setEnabled(false);
                 }
                 else {
@@ -518,13 +509,12 @@ public class Menu implements ActionListener {
         if(currentFolder == null) {
             return(0);
         }
-        
-        for(int i = 0; i < currentFolder.length; i++) {
-            if(currentFolder[i].isDirectory()) {
-                size = directorySize(currentFolder[i].listFiles(),size);
-            }
-            else {
-                size += currentFolder[i].length();
+
+        for (File file : currentFolder) {
+            if (file.isDirectory()) {
+                size = directorySize(file.listFiles(), size);
+            } else {
+                size += file.length();
             }
         }
         return(size);
@@ -549,22 +539,20 @@ public class Menu implements ActionListener {
         File [] destContents = destFile.listFiles();
         
         if(sourceFile.isFile()) {
-            for(int i = 0; i < destContents.length; i++) {
-                if(destContents[i].isFile()) {
-                   if(sourceFile.getName().equals(destContents[i].getName())) {
-                       return(true);
-                   }
-                }
+            for (File destContent : destContents) {
+                if (destContent.isFile() && sourceFile.getName().equals(destContent.getName())) {
+                        return (true);
+                    }
+
             }
             return(false);
         }
         else {
-            for(int i = 0; i < destContents.length; i++) {
-                if(destContents[i].isDirectory()) {
-                   if(sourceFile.getName().equals(destContents[i].getName())) {
-                       return(true);
-                   }
-                }
+            for (File destContent : destContents) {
+                if (destContent.isDirectory() && sourceFile.getName().equals(destContent.getName())) {
+                        return (true);
+                    }
+
             }
             return(false);
         }
@@ -581,15 +569,12 @@ public class Menu implements ActionListener {
         File [] destContents = dest.listFiles();
         
         if(source.isFile() || sourceContents == null) {
-            if((destContents != null) && (isExisted(source,dest) == true) && (!source.isDirectory())) {
+            if((destContents != null) && (isExisted(source, dest)) && (!source.isDirectory())) {
                 optionResult = JOptionPane.showConfirmDialog(null,"Are you sure you want to replace this file?",
                                         "Validation Request",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
                 
                 if(optionResult == JOptionPane.YES_OPTION) {
                     Files.copy(sourcePath,destPath.resolve(sourcePath.getFileName()),StandardCopyOption.REPLACE_EXISTING);
-                }
-                else {
-                    return;
                 }
             }
             else {
@@ -597,24 +582,21 @@ public class Menu implements ActionListener {
             }
         }
         else {
-            if((destContents != null) && (isExisted(source,dest) == true)) {
+            if((destContents != null) && (isExisted(source, dest))) {
                 optionResult = JOptionPane.showConfirmDialog(null,"Are you sure you want to replace this folder?",
                                         "Validation Request",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
                 
                 if(optionResult == JOptionPane.YES_OPTION) {
                     Path newDest = destPath.resolve(sourcePath.getFileName());
-                    for(int i = 0; i < sourceContents.length; i++) {
-                        recPaste(sourceContents[i],newDest.toFile());
+                    for (File sourceContent : sourceContents) {
+                        recPaste(sourceContent, newDest.toFile());
                     }
-                }
-                else {
-                    return;
                 }
             }
             else {
                 Path newDest = Files.copy(sourcePath,destPath.resolve(sourcePath.getFileName()));
-                for(int i = 0; i < sourceContents.length; i++) {
-                    recPaste(sourceContents[i],newDest.toFile());
+                for (File sourceContent : sourceContents) {
+                    recPaste(sourceContent, newDest.toFile());
                 }
             }
         }

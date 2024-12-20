@@ -1,4 +1,4 @@
-package ce326.hw3;
+package ce.hw3;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -10,7 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
-import java.util.*;
+import java.nio.file.FileSystems;
 import javax.swing.filechooser.FileSystemView;
 
 /**
@@ -30,7 +30,7 @@ public class BreadCrumb {
         breadCrumbPanel.setBackground(new Color(255, 222, 130));
 
         String homeDir = System.getProperty("user.home");
-        String separator = System.getProperty("file.separator");
+        String separator = FileSystems.getDefault().getSeparator();
                 
         currDirFile = new File(homeDir);
         
@@ -83,7 +83,7 @@ public class BreadCrumb {
         public void actionPerformed(ActionEvent e) {
             int checkOp = 0;
             
-            java.util.List <File> files  = Arrays.asList(File.listRoots());
+            File[] files  = File.listRoots();
             for (File f : files) {
                 if(f.getPath().contains(e.getActionCommand())) {
                     String systemFile = FileSystemView.getFileSystemView().getSystemDisplayName (f);
@@ -100,7 +100,7 @@ public class BreadCrumb {
             }
             
             breadCrumbPanel.removeAll();
-            buttonsBreadCrumb(currDirFile.getAbsolutePath(), System.getProperty("file.separator"));
+            buttonsBreadCrumb(currDirFile.getAbsolutePath(), FileSystems.getDefault().getSeparator());
             breadCrumbPanel.repaint();
             breadCrumbPanel.revalidate();
             mainFrame.setCurrDir.currentDir = currDirFile;

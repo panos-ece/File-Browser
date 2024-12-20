@@ -1,4 +1,4 @@
-package ce326.hw3;
+package ce.hw3;
 
 
 import java.awt.*;
@@ -49,7 +49,7 @@ public class Favourites {
                 ListIterator<XmlRep> it = dataList.listIterator();
                 while(it.hasNext()) {
                     XmlRep directory = it.next();
-                    File importFavourites = new File(directory.DirPathName);
+                    File importFavourites = new File(directory.dirPathName);
                     favouritesButtons(importFavourites);
                 }
                 
@@ -85,9 +85,8 @@ public class Favourites {
     public Object readFromXml(File xmlDoc) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(XmlReps.class);
         Unmarshaller reader = jc.createUnmarshaller();
-        Object xmlData = reader.unmarshal(xmlDoc);
-        
-        return(xmlData);
+
+        return(reader.unmarshal(xmlDoc));
     }
     
     MouseListener favouritesOp = new MouseListener() {
@@ -149,7 +148,7 @@ public class Favourites {
                     ListIterator<XmlRep> it = dataList.listIterator();
                     while(it.hasNext()) {
                         XmlRep directory = it.next();
-                        if(directory.DirPathName.equals(buttonToDelete.getActionCommand())) {
+                        if(directory.dirPathName.equals(buttonToDelete.getActionCommand())) {
                             it.remove();
                             xmlData.setReps(dataList);
                             writeToXml(xmlData, xmlFile);

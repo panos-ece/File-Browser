@@ -1,4 +1,4 @@
-package ce326.hw3;
+package ce.hw3;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -11,7 +11,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
-import java.util.Arrays;
 import javax.swing.filechooser.FileSystemView;
 /**
  *
@@ -46,12 +45,12 @@ public class CurrentDirectory {
         if(contents == null) {
             return(null);
         }
-        
-        for(int i = 0; i < contents.length; i++) {
-            if(contents[i] == null) {
+
+        for (File content : contents) {
+            if (content == null) {
                 continue;
             }
-            if((contents[i].isHidden()) || (!contents[i].exists())) {
+            if ((content.isHidden()) || (!content.exists())) {
                 continue;
             }
             counterFiles++;
@@ -60,28 +59,28 @@ public class CurrentDirectory {
         File [] sortedContents = new File[counterFiles];
         
         int counter = 0;
-        
-        for(int i = 0; i < contents.length; i++) {
-            if(contents[i] == null) {
+
+        for (File content : contents) {
+            if (content == null) {
                 continue;
             }
-            if((contents[i].isHidden()) || (!contents[i].exists())) {
+            if ((content.isHidden()) || (!content.exists())) {
                 continue;
             }
-            if(contents[i].isDirectory()) {
-                sortedContents[counter++] = contents[i];
+            if (content.isDirectory()) {
+                sortedContents[counter++] = content;
             }
         }
-        
-        for(int i = 0; i < contents.length; i++) {
-            if(contents[i] == null) {
+
+        for (File content : contents) {
+            if (content == null) {
                 continue;
             }
-            if((contents[i].isHidden()) || (!contents[i].exists())) {
+            if ((content.isHidden()) || (!content.exists())) {
                 continue;
             }
-            if(contents[i].isFile()) {
-                sortedContents[counter++] = contents[i];
+            if (content.isFile()) {
+                sortedContents[counter++] = content;
             }
         }
         return(sortedContents);
@@ -110,10 +109,10 @@ public class CurrentDirectory {
         if(contentsDir == null) {
             return;
         }
-        
-        for(int i = 0; i < contentsDir.length; i++) {
-            imageFile = iconDisplay(contentsDir[i]);
-            setButtonsDir(contentsDir[i], imageFile);
+
+        for (File file : contentsDir) {
+            imageFile = iconDisplay(file);
+            setButtonsDir(file, imageFile);
         }
         
         if(mainFrame.setSearchToolbar.searchUsed == 1) {
@@ -196,12 +195,7 @@ public class CurrentDirectory {
 
                     JMenuItem paste = new JMenuItem("Paste");
                     paste.addActionListener(mainFrame.setMenu);
-                    if(statePaste != 1) {
-                        paste.setEnabled(false);
-                    }
-                    else {
-                        paste.setEnabled(true);
-                    }
+                    paste.setEnabled(statePaste == 1);
                     popUp.add(paste);
 
                     JMenuItem rename = new JMenuItem("Rename");
@@ -245,7 +239,7 @@ public class CurrentDirectory {
             
             File newFile = currentDir;
             
-            java.util.List <File> files  = Arrays.asList(File.listRoots());
+            File[] files  = File.listRoots();
             for (File f : files) {
                 if(f.getPath().contains(e.getActionCommand())) {
                     String systemFile = FileSystemView.getFileSystemView().getSystemDisplayName (f);
